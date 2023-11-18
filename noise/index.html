@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Noise</title>
+    <style>
+        .controls {
+            width: max-content;
+            border: 1px solid #ddd;
+            padding: 1rem;
+        }
+        .controls .control label {
+            font-weight: bold;
+            display: inline-block;
+            width: 20ch;
+        }
+    </style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="controls">
+    <div class="control">
+        <label for="scale">Change the noise scale</label>
+        <input id="scale" type="range" min="0.001" max="0.01" step="0.001" value="0.001">
+        <span>0.001</span>
+    </div>
+    <div class="control">
+        <label for="color">Change the base color</label>
+        <input id="color" type="color" value="#7414FE">
+        <span>#7414FE</span>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.8.0/p5.min.js" integrity="sha512-pgK6Wo8doipc/IPQ0ilH3b47ww01345nR9ud1/6Qp0n+lQlEW9zuw6JhysRcUpBY4yKuVZjn1MAkDxbnncuGsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="main.js"></script>
+</body>
+</html>

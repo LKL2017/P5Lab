@@ -1,0 +1,17 @@
+.header {
+  padding: 1rem;
+  background:
+    radial-gradient(circle at 25% -25%, #ffffff, #808080 8%, transparent 16%),
+    radial-gradient(circle at 75% -25%, #ffffff, #808080 8%, transparent 16%);
+
+
+  .title {
+    font-size: 2rem;
+    font-style: italic;
+    margin-right: 1rem;
+  }
+
+  .description {
+    //font-size: 0.5rem;
+  }
+}

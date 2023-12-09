@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+  flex-flow: column wrap;
+  margin: 0 25%;
+
+  .item {
+    flex: 0 1 300px;
+    align-self: flex-start;
+    width: 200px;
+
+    &:nth-of-type(2n) {
+      align-self: flex-end;
+    }
+    &:nth-of-type(n+2) {
+      margin-top: -50px;
+    }
+  }
+}
+

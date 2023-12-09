@@ -1,8 +1,12 @@
 .header {
+  position: fixed;
+  z-index: 10;
+  width: 100%;
   padding: 1rem;
   background:
     radial-gradient(circle at 25% -25%, #ffffff, #808080 8%, transparent 16%),
-    radial-gradient(circle at 75% -25%, #ffffff, #808080 8%, transparent 16%);
+    radial-gradient(circle at 75% -25%, #ffffff, #808080 8%, transparent 16%),
+    black;
 
 
   .title {
@@ -14,4 +18,9 @@
   .description {
     //font-size: 0.5rem;
   }
+}
+
+.content {
+  position: relative;
+  top: 80px;
 }

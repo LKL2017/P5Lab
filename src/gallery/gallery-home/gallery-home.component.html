@@ -1,6 +1,6 @@
 <section class="container">
   @for (artifact of artifacts; track artifact.title) {
-    <mat-card class="item">
+    <mat-card class="item" (click)="toDetail(artifact.id)">
       <mat-card-title>{{ artifact.title }}</mat-card-title>
     </mat-card>
   }

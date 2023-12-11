@@ -1,12 +1,17 @@
-.header {
+.app-container {
+  min-width: 1200px;
+}
+
+.app-header {
   position: fixed;
   z-index: 10;
   width: 100%;
+  min-width: 1200px;
   padding: 1rem;
   background:
-    radial-gradient(circle at 25% -25%, #ffffff, #808080 8%, transparent 16%),
-    radial-gradient(circle at 75% -25%, #ffffff, #808080 8%, transparent 16%),
-    black;
+    radial-gradient(circle at 25% -25%, #ffffff, #ffffffaa 3%, transparent 16%),
+    radial-gradient(circle at 75% 125%, #ffffff, #ffffffaa 2%, transparent 16%),
+    rebeccapurple;
 
 
   .title {
@@ -20,7 +25,7 @@
   }
 }
 
-.content {
+.app-content {
   position: relative;
   top: 80px;
 }

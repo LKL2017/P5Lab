@@ -5,14 +5,12 @@ import {ParticleImageService} from "../services/particle-image.service";
 import {ParticleService} from "../services/particle.service";
 
 export const ParticleFactory = (effectService: EffectService) => {
-  console.log('factory', effectService.type)
-  // TODO: for DI test
   switch (effectService.type) {
-    case 1:
+    case 'harmonic':
       return new ParticleHarmonicService()
-    case 2:
+    case 'gravity':
       return new ParticleGravityService()
-    case 3:
+    case 'dancing':
       return new ParticleImageService()
     default:
       return new ParticleService()

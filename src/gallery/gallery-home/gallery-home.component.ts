@@ -18,9 +18,8 @@ export class GalleryHomeComponent {
     this.artifacts = list;
   }
 
-  toDetail(id: number) {
-    console.log('detail id', id)
-    this.effectService.type = id;
-    this.router.navigate(['gallery/detail', id]);
+  toDetail(artifact: Artifact) {
+    this.effectService.type = artifact.type;
+    this.router.navigate(['gallery/detail', artifact.type]);
   }
 }

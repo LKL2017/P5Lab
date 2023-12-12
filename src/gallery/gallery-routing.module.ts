@@ -6,7 +6,7 @@ import {GalleryHomeComponent} from "./gallery-home/gallery-home.component";
 const routes: Routes = [
   {path: '', pathMatch: "full", redirectTo: 'home'},
   {path: 'home', component: GalleryHomeComponent},
-  {path: 'detail/:id', component: GalleryDetailComponent},
+  {path: 'detail/:type', component: GalleryDetailComponent},
 ];
 
 @NgModule({

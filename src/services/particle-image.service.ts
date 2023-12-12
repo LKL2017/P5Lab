@@ -7,8 +7,4 @@ export class ParticleImageService extends ParticleService {
   constructor() {
     super();
   }
-
-  override render() {
-    console.log('[render] image')
-  }
 }

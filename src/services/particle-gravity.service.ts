@@ -7,8 +7,4 @@ export class ParticleGravityService extends ParticleService {
   constructor() {
     super();
   }
-
-  override render() {
-    console.log('[render] gravity')
-  }
 }

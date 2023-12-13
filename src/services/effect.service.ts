@@ -5,5 +5,5 @@ import { Injectable } from '@angular/core';
 })
 export class EffectService {
   type: 'harmonic' | 'gravity' | 'dancing';
-  constructor() { }
+  constructor() {}
 }

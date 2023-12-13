@@ -19,7 +19,6 @@ export class GalleryHomeComponent {
   }
 
   toDetail(artifact: Artifact) {
-    this.effectService.type = artifact.type;
     this.router.navigate(['gallery/detail', artifact.type]);
   }
 }

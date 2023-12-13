@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ParticleFactory} from "../../di/particle-factory";
-import {EffectService} from "../../services/effect.service";
 import {ParticleService} from "../../services/particle.service";
 
 @Component({
@@ -9,7 +8,7 @@ import {ParticleService} from "../../services/particle.service";
   templateUrl: './gallery-detail.component.html',
   styleUrl: './gallery-detail.component.scss',
   providers: [
-    { provide: ParticleService, useFactory: ParticleFactory, deps: [EffectService] }
+    { provide: ParticleService, useFactory: ParticleFactory, deps: [ActivatedRoute] }
   ]
 })
 export class GalleryDetailComponent implements OnInit, AfterViewInit {

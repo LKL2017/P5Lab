@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {GalleryDetailComponent} from "./gallery-detail/gallery-detail.component";
 import {GalleryHomeComponent} from "./gallery-home/gallery-home.component";
@@ -12,7 +13,8 @@ import { GalleryRoutingModule } from './gallery-routing.module';
   imports: [
     CommonModule,
     GalleryRoutingModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule
   ]
 })
 export class GalleryModule { }

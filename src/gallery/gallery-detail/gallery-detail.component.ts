@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ParticleFactory} from "../../di/particle-factory";
 import {ParticleService} from "../../services/particle.service";
 
@@ -14,14 +14,18 @@ import {ParticleService} from "../../services/particle.service";
 export class GalleryDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('canvas') canvasRef!: ElementRef;
 
-  constructor(private particleService: ParticleService) {}
+  constructor(private particleService: ParticleService,
+              private router: Router) {}
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
     const canvasEl = this.canvasRef.nativeElement;
-    this.particleService.initP5Env(600, 400, canvasEl);
+    this.particleService.initP5Env(800, 600, canvasEl);
   }
 
+  toGalleryHome() {
+   this.router.navigate(['gallery/home'])
+  }
 }

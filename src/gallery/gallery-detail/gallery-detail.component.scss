@@ -1,27 +1,24 @@
 .container {
+  padding: 0 20%;
 
   .main {
     display: flex;
-    background: aqua;
-    padding: 0 20%;
 
     canvas {
-      background: blue;
-      flex: 1 0 600px;
-      margin: 1rem;
+      background: black;
+      flex: 0 0 600px;
       aspect-ratio: 3 / 2;
     }
 
     .canvas-handler {
-      background: pink;
       flex: 0 0 120px;
-      margin: 1rem;
+      margin: 0 1rem;
     }
   }
 
   .footer {
     height: 2rem;
-    background: rebeccapurple;
+    //background: #fff5;
   }
 
 }

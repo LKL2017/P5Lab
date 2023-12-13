@@ -14,7 +14,7 @@ import {EffectService} from "../../services/effect.service";
 export class GalleryHomeComponent {
   artifacts!: Artifact[]
 
-  constructor(private router: Router, @Inject(ArtifactToken) list: Artifact[], private effectService: EffectService) {
+  constructor(private router: Router, @Inject(ArtifactToken) list: Artifact[]) {
     this.artifacts = list;
   }
 

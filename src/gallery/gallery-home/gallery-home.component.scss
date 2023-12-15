@@ -1,20 +1,27 @@
 .container {
   display: flex;
   flex-flow: column wrap;
-  margin: 0 25%;
+  width: 800px;
+  margin: 0 auto;
 
   .item {
     flex: 0 1 300px;
     align-self: flex-start;
-    width: 200px;
-    cursor: pointer;
+    width: 240px;
+    margin: 1.5rem;
+    transition: all ease 0.3s;
 
     &:nth-of-type(2n) {
       align-self: flex-end;
     }
 
     &:nth-of-type(n+2) {
-      //margin-top: -50px;
+      margin-top: -50px;
+    }
+
+    &:hover {
+      transform: scale(1.1) rotate(2deg);
+      box-shadow: 0 0 6px 6px #aaf6;
     }
   }
 }

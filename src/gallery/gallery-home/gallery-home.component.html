@@ -1,7 +1,17 @@
 <section class="container">
   @for (artifact of artifacts; track artifact.title) {
-    <mat-card class="item" (click)="toDetail(artifact)">
-      <mat-card-title>{{ artifact.title }}</mat-card-title>
+    <mat-card class="item">
+      <mat-card-header>
+        <mat-card-title>{{ artifact.title }}</mat-card-title>
+      </mat-card-header>
+      @if (artifact.preview) {
+        <img [src]="artifact.preview"  mat-card-image alt="">
+      } @else {
+        <mat-card-content>Developing</mat-card-content>
+      }
+      <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="toDetail(artifact)" [disabled]="!artifact.preview">Detail</button>
+      </mat-card-actions>
     </mat-card>
   }
 </section>

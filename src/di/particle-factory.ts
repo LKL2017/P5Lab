@@ -5,6 +5,7 @@ import {ParticleImageService} from "../services/particle-image.service";
 import {ParticleService} from "../services/particle.service";
 
 export const ParticleFactory = (route: ActivatedRoute) => {
+  console.log('call particle factory')
   let type = '';
   route.params.subscribe(params => {
     type = params['type'];

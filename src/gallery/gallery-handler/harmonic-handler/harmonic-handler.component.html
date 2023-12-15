@@ -1,0 +1,16 @@
+<div class="handler-control-row">
+  <label>Composite two waves</label>
+  <mat-slide-toggle [(ngModel)]="isComposite" (ngModelChange)="toggleComposite()">{{ isComposite ? 'Composited' : 'Divided'}}</mat-slide-toggle>
+</div>
+<div class="handler-control-row">
+  <label>Particle Style</label>
+  <mat-radio-group [(ngModel)]="particleStyle" (ngModelChange)="setParticleParticle($event)">
+    <mat-radio-button value="circle">
+      Circle
+    </mat-radio-button>
+    <mat-radio-button value="rect">
+      Rectangle
+    </mat-radio-button>
+  </mat-radio-group>
+
+</div>

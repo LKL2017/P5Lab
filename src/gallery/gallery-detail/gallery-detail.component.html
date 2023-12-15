@@ -1,9 +1,12 @@
 <section class="container">
   <div class="main">
     <canvas id="canvas-host" #canvas></canvas>
-<!--    <div class="canvas-handler"></div>-->
+    <div class="canvas-handler">
+      <span class="title">Try Some Controls</span>
+      <ng-component *ngComponentOutlet="getHandlerComponent(); inputs: { particleService }"></ng-component>
+    </div>
   </div>
-  <button mat-raised-button color="primary" (click)="toGalleryHome()">Back</button>
   <div class="footer">
+    <button mat-raised-button color="primary" (click)="toGalleryHome()">Back</button>
   </div>
 </section>

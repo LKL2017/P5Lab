@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import P5 from "p5";
 import {_P5Particle, ParticleService} from "./particle.service";
 
+export type HarmonicParticleStyle = 'circle' | 'rect';
+
 class HarmonicParticle implements _P5Particle {
   p5: P5;
   pos: P5.Vector;
@@ -10,9 +12,10 @@ class HarmonicParticle implements _P5Particle {
   d: number;
   angle: number;
   angleV = 0;
+  particleStyle: HarmonicParticleStyle = 'circle';
 
   //multi waves
-  isCombined = false;
+  isComposite = false;
   pos2: P5.Vector;
 
   get crest(): number {
@@ -46,12 +49,21 @@ class HarmonicParticle implements _P5Particle {
   }
 
   render() {
-    if (this.isCombined) {
+    if (this.isComposite) {
       const sumY = this.p5.map(this.pos.y + this.pos2.y, this.trough + this.trough2, this.crest + this.crest2, this.p5.height * 0.2, this.p5.height * 0.8);
-      this.p5.circle(this.pos.x, sumY, this.d);
+      if (this.particleStyle === 'circle') {
+        this.p5.circle(this.pos.x, sumY, this.d);
+      } else {
+        this.p5.rect(this.pos.x - this.d / 2, sumY - this.d / 2, this.d, this.d);
+      }
     } else {
-      this.p5.circle(this.pos.x, this.pos.y, this.d);
-      this.p5.circle(this.pos2.x, this.pos2.y, this.d);
+      if (this.particleStyle === 'circle') {
+        this.p5.circle(this.pos.x, this.pos.y, this.d);
+        this.p5.circle(this.pos2.x, this.pos2.y, this.d);
+      } else {
+        this.p5.rect(this.pos.x - this.d / 2, this.pos.y - this.d / 2, this.d, this.d);
+        this.p5.rect(this.pos2.x - this.d / 2, this.pos2.y - this.d / 2, this.d, this.d);
+      }
     }
   }
 }
@@ -74,14 +86,11 @@ export class ParticleHarmonicService extends ParticleService {
 
     const sketch = (p5: P5) => {
       p5.setup = () => {
-        const renderer = p5.createCanvas(w, h, canvasEl);
+        p5.createCanvas(w, h, canvasEl);
         p5.background(0, 0, 0);
         this.genAngles();
         this.genParticles(p5);
         this.setupParticles(p5);
-        renderer.mouseClicked(() => {
-          this.particles.forEach(p => p.isCombined = !p.isCombined)
-        })
       }
       p5.draw = () => this.draw(p5);
     }
@@ -118,5 +127,13 @@ export class ParticleHarmonicService extends ParticleService {
 
     // render
     this.particles.forEach(particle => particle.render());
+  }
+
+  toggleComposite() {
+    this.particles.forEach(p => p.isComposite = !p.isComposite)
+  }
+
+  setParticleStyle(style: HarmonicParticleStyle) {
+    this.particles.forEach(p => p.particleStyle = style || 'circle')
   }
 }

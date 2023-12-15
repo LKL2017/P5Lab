@@ -15,7 +15,7 @@ export abstract class _P5Particle {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ParticleService {
   context: CanvasRenderingContext2D | null;

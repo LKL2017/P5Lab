@@ -122,11 +122,10 @@ export class ParticleHarmonicService extends ParticleService {
     // clear
     p5.background(0, 0, 0);
 
-    // update pos
-    this.particles.forEach(particle => particle.update());
-
-    // render
-    this.particles.forEach(particle => particle.render());
+    this.particles.forEach(particle => {
+      particle.update();
+      particle.render();
+    });
   }
 
   toggleComposite() {

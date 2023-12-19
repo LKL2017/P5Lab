@@ -10,6 +10,8 @@ export abstract class _P5Particle {
   pos: P5.Vector;
   vel: P5.Vector;
   acc: P5.Vector;
+  protected constructor() {
+  }
   update() {}
   render() {}
 }

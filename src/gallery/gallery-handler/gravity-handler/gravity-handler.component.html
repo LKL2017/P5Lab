@@ -1,1 +1,5 @@
-<p>gravity-handler works!</p>
+<div class="handler-control-row">
+  <label>Show Tail</label>
+  <mat-slide-toggle [(ngModel)]="isShowTail" (ngModelChange)="toggleTail()">{{ isShowTail ? 'Show' : 'Hidden'}}</mat-slide-toggle>
+</div>
+

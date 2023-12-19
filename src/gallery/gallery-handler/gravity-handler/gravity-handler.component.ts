@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ParticleGravityService} from "../../../services/particle-gravity.service";
 
 @Component({
@@ -8,6 +8,14 @@ import {ParticleGravityService} from "../../../services/particle-gravity.service
   providers: [ParticleGravityService]
 })
 export class GravityHandlerComponent {
-  constructor(private particleGravityService: ParticleGravityService) {
+  @Input() particleService: ParticleGravityService;
+
+  isShowTail = false;
+
+  constructor() {
+  }
+
+  toggleTail() {
+    this.particleService.toggleTail();
   }
 }

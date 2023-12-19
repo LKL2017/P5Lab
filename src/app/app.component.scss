@@ -23,6 +23,16 @@
   .description {
     //font-size: 0.5rem;
   }
+
+  .app-header-icon {
+    position: absolute;
+    right: 1rem;
+    vertical-align: middle;
+
+    > img {
+      width: 32px;
+    }
+  }
 }
 
 .app-content {

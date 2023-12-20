@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ParticleImageService} from "../../../services/particle-image.service";
+import {ImageParticleStyle, ParticleImageService} from "../../../services/particle-image.service";
 
 @Component({
   selector: 'app-image-handler',
@@ -9,7 +9,20 @@ import {ParticleImageService} from "../../../services/particle-image.service";
 export class ImageHandlerComponent {
   @Input() particleService: ParticleImageService
 
+  particleStyle: ImageParticleStyle = 'square';
+  particleSizeMin = 4;
+  particleSizeMax = 12;
+  particleSize = this.particleSizeMin;
+
   constructor() {
+  }
+
+  setParticleStyle(type: ImageParticleStyle) {
+    this.particleService.setParticleStyle(type);
+  }
+
+  setParticleSize(size: number) {
+    this.particleService.setParticleSize(size);
   }
 
 }

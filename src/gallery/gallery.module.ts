@@ -5,6 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatCardModule} from "@angular/material/card";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSliderModule} from "@angular/material/slider";
 import {GalleryDetailComponent} from "./gallery-detail/gallery-detail.component";
 import {GalleryHomeComponent} from "./gallery-home/gallery-home.component";
 
@@ -29,7 +30,8 @@ import { ImageHandlerComponent } from './gallery-handler/image-handler/image-han
     MatButtonModule,
     MatSlideToggleModule,
     FormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatSliderModule
   ]
 })
 export class GalleryModule { }

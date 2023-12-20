@@ -1,1 +1,29 @@
-<p>image-handler works!</p>
+<div class="handler-control-row">
+  <label>Particle Style</label>
+  <mat-radio-group [(ngModel)]="particleStyle" (ngModelChange)="setParticleStyle($event)">
+    <mat-radio-button value="square">Square</mat-radio-button>
+    <mat-radio-button value="circle">Circle</mat-radio-button>
+    <mat-radio-button value="ascii">ASCII</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div class="handler-control-row">
+  <label>Particle Size</label>
+  <mat-slider [min]="particleSizeMin" [max]="particleSizeMax">
+    <input matSliderThumb [(ngModel)]="particleSize" (ngModelChange)="setParticleSize($event)">
+  </mat-slider>
+  <div class="particle-size-desc">
+    <label>size:</label>
+    <span>{{ particleSize }}px</span>
+  </div>
+</div>
+<div class="handler-control-row">
+  <label>Pixels Rains</label>
+</div>
+<div class="handler-control-row">
+  <label>Mouse Push Away</label>
+</div>
+<div class="handler-control-row">
+  <label>Pixels Rains</label>
+</div>
+
+

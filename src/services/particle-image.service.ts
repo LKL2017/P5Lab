@@ -1,6 +1,17 @@
 import { Injectable } from '@angular/core';
+import {Subject} from "rxjs";
 import {_P5Particle, ParticleService} from "./particle.service";
 import P5 from 'p5';
+
+export type ImageParticleStyle = 'square' | 'circle' | 'ascii';
+interface ImageParticleModel {
+  color: string,
+  x: number,
+  y: number,
+  size: number
+}
+
+const asciiStrings = ['@', '#', '$', '%', '&', '*', '+', '-'];
 
 class ImageParticle implements _P5Particle {
   p5: P5;
@@ -11,6 +22,11 @@ class ImageParticle implements _P5Particle {
   size: number;
 
   originalPos: P5.Vector;
+  particleStyle: ImageParticleStyle = 'square';
+
+  get textSize(): number {
+    return Math.floor(this.size * 1.2);
+  }
 
   constructor(p5: P5, x: number, y: number, color: string, size: number) {
     this.p5 = p5;
@@ -21,18 +37,33 @@ class ImageParticle implements _P5Particle {
 
   update() {
     this.p5.fill(this.color);
+    this.p5.textSize(this.textSize);
+    this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
   }
 
   render() {
-    this.p5.rect(this.pos.x, this.pos.y, this.size, this.size);
+    if (this.particleStyle === 'circle') {
+      this.p5.circle(this.pos.x + this.size / 2, this.pos.y + this.size / 2, this.size);
+    } else if (this.particleStyle === 'ascii') {
+      const str = asciiStrings[Math.floor(Math.random() * asciiStrings.length)];
+      this.p5.text(str, this.pos.x, this.pos.y);
+    } else {
+      // default: rect
+      this.p5.rect(this.pos.x, this.pos.y, this.size, this.size);
+    }
   }
 }
 
 @Injectable()
 export class ParticleImageService extends ParticleService {
+  p5: P5;
+  models: ImageParticleModel[][] = [];
   particles: ImageParticle[] = [];
   pixels: number[];
   gap = 4;
+  particleStyle: ImageParticleStyle = 'square';
+  drawOnce$ = new Subject<void>();
+  drawOnceOb = this.drawOnce$.asObservable();
 
   constructor() {
     super();
@@ -44,18 +75,26 @@ export class ParticleImageService extends ParticleService {
     this.height = h;
 
     const sketch = (p5: P5) => {
+      p5.draw = () => this.draw(p5);
+
       p5.setup = () => {
+        this.p5 = p5;
+
         p5.createCanvas(w, h, canvasEl);
         p5.loadImage('assets/images/6.png', img => {
           p5.image(img, (w - img.width) / 2, (h - img.height) / 2);
           p5.loadPixels();
           this.pixels = p5.pixels;
-
-          this.genParticles(p5, this.pixels);
+          this.models = this.genModels(this.pixels);
+          this.particles = this.genParticles(this.models, p5);
+          // call once when image loaded
+          p5.draw();
         })
       }
 
-      p5.draw = () => this.draw(p5)
+      this.drawOnceOb.subscribe(_ => {
+        p5.redraw();
+      })
     }
 
     this.P5instance = new P5(sketch);
@@ -67,8 +106,10 @@ export class ParticleImageService extends ParticleService {
     this.pixels = [];
   }
 
-  genParticles(p5: P5, pixels: number[]) {
+  genModels(pixels: number[]) {
+    const output: ImageParticleModel[][] = [];
     for (let y = 0; y < this.height; y += this.gap) {
+      const row = [];
       for (let x = 0; x < this.width; x += this.gap) {
         const index = (y * this.width + x) * 4;
         const r = pixels[index];
@@ -77,10 +118,27 @@ export class ParticleImageService extends ParticleService {
         const alpha = pixels[index + 3];
         // TODO: change here to filter
         if (r + g + b > 255) {
-          this.particles.push(new ImageParticle(p5, x, y, `rgb(${r}, ${g}, ${b})`, this.gap))
+          row.push({
+            x,
+            y,
+            color: `rgb(${r}, ${g}, ${b})`,
+            size: this.gap
+          })
         }
       }
+      output.push(row);
     }
+    return output;
+  }
+
+  genParticles(models: ImageParticleModel[][], p5: P5): ImageParticle[] {
+    const particles = [];
+    for (let rows of models) {
+      for (let item of rows) {
+        particles.push(new ImageParticle(p5, item.x, item.y, item.color, item.size));
+      }
+    }
+    return particles;
   }
 
   draw(p5: P5) {
@@ -88,6 +146,21 @@ export class ParticleImageService extends ParticleService {
     this.particles.forEach(particle => {
       particle.update();
       particle.render();
-    })
+    });
+    p5.noLoop();
+  }
+
+  setParticleStyle(type: ImageParticleStyle) {
+    this.particleStyle = type;
+    this.particles.forEach(particle => particle.particleStyle = type);
+    this.drawOnce$.next();
+  }
+
+  setParticleSize(size: number) {
+    this.gap = size;
+    this.models = this.genModels(this.pixels);
+    this.particles = this.genParticles(this.models, this.p5);
+    // cause the particles were re-constructed
+    this.setParticleStyle(this.particleStyle);
   }
 }

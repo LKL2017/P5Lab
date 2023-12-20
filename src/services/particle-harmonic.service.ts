@@ -94,7 +94,13 @@ export class ParticleHarmonicService extends ParticleService {
       }
       p5.draw = () => this.draw(p5);
     }
-    new P5(sketch);
+    this.P5instance = new P5(sketch);
+  }
+
+  override destroyP5Env() {
+    this.P5instance.remove();
+    this.angles = [];
+    this.particles = [];
   }
 
   genParticles(p5: P5) {

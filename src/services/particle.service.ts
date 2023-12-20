@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import P5 from 'p5';
 
-export interface PlainParticle {
-  x: number;
-  y: number;
-}
-
 export abstract class _P5Particle {
   pos: P5.Vector;
   vel: P5.Vector;
@@ -23,6 +18,8 @@ export class ParticleService {
   context: CanvasRenderingContext2D | null;
   width: number;
   height: number;
+  P5instance: P5;
   constructor() { }
   initP5Env(w: number, h: number, e: HTMLCanvasElement) {}
+  destroyP5Env() {}
 }

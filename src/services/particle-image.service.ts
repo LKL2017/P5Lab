@@ -58,7 +58,13 @@ export class ParticleImageService extends ParticleService {
       p5.draw = () => this.draw(p5)
     }
 
-    new P5(sketch);
+    this.P5instance = new P5(sketch);
+  }
+
+  override destroyP5Env() {
+    this.P5instance.remove();
+    this.particles = [];
+    this.pixels = [];
   }
 
   genParticles(p5: P5, pixels: number[]) {

@@ -11,8 +11,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .handler-control-row {
   margin: 1rem 0;
 
-  label {
+  & > label {
+    position: relative;
     display: block;
-    padding-bottom: 2px;
+    padding-left: 6px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+
+    &::before {
+      position: absolute;
+      left: -2px;
+      top: 0;
+      display: block;
+      content: '';
+      width: 4px;
+      height: 100%;
+      background-color: #fdf9;
+    }
   }
 }

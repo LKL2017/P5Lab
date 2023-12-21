@@ -11,8 +11,8 @@
   <mat-slider [min]="particleSizeMin" [max]="particleSizeMax">
     <input matSliderThumb [(ngModel)]="particleSize" (ngModelChange)="setParticleSize($event)">
   </mat-slider>
-  <div class="particle-size-desc">
-    <label>size:</label>
+  <div>
+    <label style="margin-right: 4px">size:</label>
     <span>{{ particleSize }}px</span>
   </div>
 </div>

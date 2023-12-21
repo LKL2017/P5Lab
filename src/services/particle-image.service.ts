@@ -31,6 +31,7 @@ class ImageParticle implements _P5Particle {
   constructor(p5: P5, x: number, y: number, color: string, size: number) {
     this.p5 = p5;
     this.pos = new P5.Vector(x, y);
+    this.originalPos = this.pos.copy();
     this.color = color;
     this.size = size;
   }
@@ -62,6 +63,7 @@ export class ParticleImageService extends ParticleService {
   pixels: number[];
   gap = 4;
   particleStyle: ImageParticleStyle = 'square';
+
   drawOnce$ = new Subject<void>();
   drawOnceOb = this.drawOnce$.asObservable();
 
@@ -90,11 +92,13 @@ export class ParticleImageService extends ParticleService {
           // call once when image loaded
           p5.draw();
         })
+        p5.noLoop();
       }
 
       this.drawOnceOb.subscribe(_ => {
         p5.redraw();
       })
+
     }
 
     this.P5instance = new P5(sketch);
@@ -104,9 +108,14 @@ export class ParticleImageService extends ParticleService {
     this.P5instance.remove();
     this.particles = [];
     this.pixels = [];
+
+    this.drawOnce$.complete();
   }
 
-  genModels(pixels: number[]) {
+  genModels(
+    pixels: number[],
+    filterFn = (r: number, g: number, b: number) => r + g + b > 255
+  ) {
     const output: ImageParticleModel[][] = [];
     for (let y = 0; y < this.height; y += this.gap) {
       const row = [];
@@ -117,7 +126,7 @@ export class ParticleImageService extends ParticleService {
         const b = pixels[index + 2];
         const alpha = pixels[index + 3];
         // TODO: change here to filter
-        if (r + g + b > 255) {
+        if (filterFn(r, g, b)) {
           row.push({
             x,
             y,
@@ -147,7 +156,6 @@ export class ParticleImageService extends ParticleService {
       particle.update();
       particle.render();
     });
-    p5.noLoop();
   }
 
   setParticleStyle(type: ImageParticleStyle) {

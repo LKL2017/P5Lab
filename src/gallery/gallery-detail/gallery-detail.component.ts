@@ -47,7 +47,7 @@ export class GalleryDetailComponent implements AfterViewInit, OnDestroy {
         return HarmonicHandlerComponent;
       case 'gravity':
         return GravityHandlerComponent;
-      case 'dancing':
+      case 'pixel':
         return ImageHandlerComponent;
       default:
         return null;

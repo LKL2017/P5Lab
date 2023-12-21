@@ -1,7 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {Router} from "@angular/router";
 import {Artifact, ArtifactToken, MOCK_ARTIFACTS} from "../../di/mock";
-import {EffectService} from "../../services/effect.service";
 
 @Component({
   selector: 'app-gallery-home',

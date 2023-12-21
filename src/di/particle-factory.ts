@@ -15,7 +15,7 @@ export const ParticleFactory = (route: ActivatedRoute) => {
       return new ParticleHarmonicService()
     case 'gravity':
       return new ParticleGravityService()
-    case 'dancing':
+    case 'pixel':
       return new ParticleImageService()
     default:
       return new ParticleService()

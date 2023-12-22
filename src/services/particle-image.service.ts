@@ -4,6 +4,7 @@ import {_P5Particle, ParticleService} from "./particle.service";
 import P5 from 'p5';
 
 export type ImageParticleStyle = 'square' | 'circle' | 'ascii';
+export type ImageParticlePattern = 'fill' | 'stroke';
 interface ImageParticleModel {
   color: string,
   x: number,
@@ -23,6 +24,7 @@ class ImageParticle implements _P5Particle {
 
   originalPos: P5.Vector;
   particleStyle: ImageParticleStyle = 'square';
+  pattern: ImageParticlePattern = 'fill';
 
   get textSize(): number {
     return Math.floor(this.size * 1.2);
@@ -37,7 +39,13 @@ class ImageParticle implements _P5Particle {
   }
 
   update() {
-    this.p5.fill(this.color);
+    if (this.pattern === 'fill') {
+      this.p5.fill(this.color);
+      this.p5.stroke('black');
+    } else {
+      this.p5.fill('black')
+      this.p5.stroke(this.color);
+    }
     this.p5.textSize(this.textSize);
     this.p5.textAlign(this.p5.LEFT, this.p5.TOP);
   }
@@ -63,6 +71,7 @@ export class ParticleImageService extends ParticleService {
   pixels: number[];
   gap = 4;
   particleStyle: ImageParticleStyle = 'square';
+  particlePattern: ImageParticlePattern = 'fill';
 
   drawOnce$ = new Subject<void>();
   drawOnceOb = this.drawOnce$.asObservable();
@@ -168,7 +177,15 @@ export class ParticleImageService extends ParticleService {
     this.gap = size;
     this.models = this.genModels(this.pixels);
     this.particles = this.genParticles(this.models, this.p5);
+
     // cause the particles were re-constructed
     this.setParticleStyle(this.particleStyle);
+    this.setParticleRenderPattern(this.particlePattern);
+  }
+
+  setParticleRenderPattern(pattern: ImageParticlePattern) {
+    this.particlePattern = pattern;
+    this.particles.forEach(particle => particle.pattern = pattern);
+    this.drawOnce$.next();
   }
 }

@@ -7,6 +7,13 @@
   </mat-radio-group>
 </div>
 <div class="handler-control-row">
+  <label>Render Pattern</label>
+  <mat-radio-group [(ngModel)]="particleRenderPattern" (ngModelChange)="setParticleRenderPattern($event)">
+    <mat-radio-button value="fill">Fill</mat-radio-button>
+    <mat-radio-button value="stroke">Stroke</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div class="handler-control-row">
   <label>Particle Size</label>
   <mat-slider [min]="particleSizeMin" [max]="particleSizeMax">
     <input matSliderThumb [(ngModel)]="particleSize" (ngModelChange)="setParticleSize($event)">

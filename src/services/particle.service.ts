@@ -15,7 +15,7 @@ export abstract class _P5Particle {
   providedIn: 'root',
 })
 export class ParticleService {
-  context: CanvasRenderingContext2D | null;
+  context: CanvasRenderingContext2D;
   width: number;
   height: number;
   P5instance: P5;

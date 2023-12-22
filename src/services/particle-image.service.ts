@@ -72,7 +72,6 @@ export class ParticleImageService extends ParticleService {
   }
 
   override initP5Env(w: number, h: number, canvasEl: HTMLCanvasElement) {
-    this.context = canvasEl.getContext('2d');
     this.width = w;
     this.height = h;
 

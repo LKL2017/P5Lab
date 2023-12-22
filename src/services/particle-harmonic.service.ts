@@ -80,7 +80,6 @@ export class ParticleHarmonicService extends ParticleService {
 
   override initP5Env(w: number, h: number, canvasEl: HTMLCanvasElement) {
     console.log('init P5 Env')
-    this.context = canvasEl.getContext('2d');
     this.width = w;
     this.height = h;
 

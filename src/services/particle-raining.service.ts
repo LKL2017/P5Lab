@@ -23,13 +23,12 @@ class RainingParticle implements _P5Particle {
     this.models = models;
     this.pos = new P5.Vector(this.p5.random(this.p5.width), 0);
     this.vel = new P5.Vector(0, 0);
-    this.size = this.p5.random(2) + 2;
+    this.size = this.p5.random(2) + 3;
   }
 
   update() {
     const ceil: RainingParticleModel = this.models[Math.floor(this.pos.y)][Math.floor(this.pos.x)];
-    this.p5.fill(ceil.color.concat(ceil.brightness * 100));
-
+    this.p5.fill(ceil.color);
     this.vel.y = 4 - ceil.brightness // max brightness is 2.55
     this.pos.add(this.vel);
     if (this.pos.y >= this.p5.height) {
@@ -39,7 +38,9 @@ class RainingParticle implements _P5Particle {
   }
 
   render() {
-    this.p5.circle(this.pos.x, this.pos.y, this.size);
+    // this.p5.circle(this.pos.x, this.pos.y, this.size);
+    // this.p5.rect(this.pos.x, this.pos.y, this.size, 30);
+    this.p5.arc(this.pos.x, this.pos.y, this.size, this.size, 0, Math.PI);
   }
 }
 
@@ -47,7 +48,7 @@ class RainingParticle implements _P5Particle {
   providedIn: 'root'
 })
 export class ParticleRainingService extends ParticleService{
-  count = 1200;
+  count = 800;
   particles: RainingParticle[] = [];
   pixels: number[];
   models: RainingParticleModel[][] = [];
@@ -63,8 +64,10 @@ export class ParticleRainingService extends ParticleService{
     const sketch = (p5: P5) => {
       p5.setup = () => {
         p5.createCanvas(w, h, canvasEl);
-        p5.loadImage('assets/images/598.png', img => {
+        p5.pixelDensity(1);
+        p5.loadImage('assets/images/wukong.jpeg', img => {
           p5.image(img, (w - img.width) / 2, (h - img.height) / 2);
+          p5.filter(p5.DILATE);
           p5.loadPixels();
           this.pixels = p5.pixels;
           this.models = this.genModels(this.pixels);
@@ -116,7 +119,7 @@ export class ParticleRainingService extends ParticleService{
   }
 
   draw(p5: P5) {
-    p5.background(0, 5);
+    p5.background(10, 5);
     this.particles.forEach(particle => {
       particle.update();
       particle.render();

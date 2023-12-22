@@ -26,3 +26,23 @@
   }
 }
 
+.matter-text {
+  text-transform: uppercase;
+  display: inline-block;
+  font-weight: bold;
+
+  color: transparent;
+  background: linear-gradient(8deg, #da49e7 15%, #9154de, #2ac6d5, #1fea8e 85%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+
+  animation: bg-effect 2s alternate infinite;
+  @keyframes bg-effect {
+    from {
+      background-position: left;
+    }
+    to {
+      background-position: right;
+    }
+  }
+}

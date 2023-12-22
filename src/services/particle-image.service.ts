@@ -83,6 +83,7 @@ export class ParticleImageService extends ParticleService {
         this.p5 = p5;
 
         p5.createCanvas(w, h, canvasEl);
+        p5.pixelDensity(1);
         p5.loadImage('assets/images/6.png', img => {
           p5.image(img, (w - img.width) / 2, (h - img.height) / 2);
           p5.loadPixels();

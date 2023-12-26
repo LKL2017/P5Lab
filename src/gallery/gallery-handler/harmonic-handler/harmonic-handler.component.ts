@@ -14,7 +14,9 @@ export class HarmonicHandlerComponent implements OnInit{
   particleStyle: HarmonicParticleStyle = "circle";
   amplitudeRotation: number = 0;
   amplitudeSize = 0.15;
-  // not fr strict calculation
+  frequency = 1// maybe px in this program
+
+  // not strict calculation
   approachPI = 3.14
 
   constructor() {
@@ -46,5 +48,13 @@ export class HarmonicHandlerComponent implements OnInit{
 
   formatAmplitudeSize(value: number) {
     return Math.round(value * 100) + '%';
+  }
+
+  setFrequencyForSecondWave(value: number) {
+    this.particleService.setFrequencyForSecondWave(value);
+  }
+
+  formatFrequency(value: number) {
+    return value.toString();
   }
 }

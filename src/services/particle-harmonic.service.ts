@@ -19,6 +19,7 @@ class HarmonicParticle implements _P5Particle {
 
   //multi waves
   pos2: P5.Vector;
+  frequency = 1; // only apply to wave2
   compositePos: P5.Vector;
 
   get base():number {
@@ -47,7 +48,7 @@ class HarmonicParticle implements _P5Particle {
   update() {
     const phase = this.angle + this.angleV;
     this.amplitudeVec.y = Math.sin(phase) * this.amplitude;
-    this.amplitudeVec2.y = Math.cos(2 * phase) * this.amplitude;
+    this.amplitudeVec2.y = Math.cos(phase * this.frequency) * this.amplitude;
     this.compositeAmplitudeVec.y = this.amplitudeVec.y + this.amplitudeVec2.y;
 
     this.angleV += this.angleA;
@@ -172,5 +173,9 @@ export class ParticleHarmonicService extends ParticleService {
 
   setAmplitudeSize(size: number) {
     this.particles.forEach(p => p.amplitudeSize = size)
+  }
+
+  setFrequencyForSecondWave(f: number) {
+    this.particles.forEach(p => p.frequency = f)
   }
 }

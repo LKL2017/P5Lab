@@ -12,60 +12,74 @@ class HarmonicParticle implements _P5Particle {
   d: number;
   angle: number;
   angleV = 0;
+  angleA = 0.02;
   particleStyle: HarmonicParticleStyle = 'circle';
+  amplitudeRotation: number = 0;
 
   //multi waves
-  isComposite = false;
   pos2: P5.Vector;
+  compositePos: P5.Vector;
 
-  get crest(): number {
-    return this.p5.height * 0.45;
+  get base():number {
+    return this.p5.height * 0.3;
   }
-
-  get trough(): number {
+  get base2():number {
+    return this.p5.height * 0.7;
+  }
+  get amplitude():number {
     return this.p5.height * 0.15;
   }
 
-  get crest2(): number {
-    return this.p5.height * 0.85;
-  }
-
-  get trough2(): number {
-    return this.p5.height * 0.55;
-  }
+  amplitudeVec = new P5.Vector(0, 0);
+  amplitudeVec2 = new P5.Vector(0, 0);
+  compositeAmplitudeVec = new P5.Vector(0, 0);
 
   constructor(p5Context: P5, x: number, y: number, d: number, angle: number) {
     this.p5 = p5Context;
-    this.pos = new P5.Vector(x, y);
-    this.pos2 = new P5.Vector(x, y);
+    this.pos = new P5.Vector(x, this.base);
+    this.pos2 = new P5.Vector(x, this.base2);
+    this.compositePos = new P5.Vector(x, y);
     this.d = d;
     this.angle = angle;
   }
 
   update() {
-    this.pos.y = this.p5.map(Math.sin(this.angle + this.angleV), -1, 1, this.trough, this.crest);
-    this.pos2.y = this.p5.map(Math.cos(2 * this.angle + 2 * this.angleV), -1, 1, this.trough2, this.crest2);
-    this.angleV += 0.02;
+    const phase = this.angle + this.angleV;
+    this.amplitudeVec.y = Math.sin(phase) * this.amplitude;
+    this.amplitudeVec2.y = Math.cos(2 * phase) * this.amplitude;
+    this.compositeAmplitudeVec.y = this.amplitudeVec.y + this.amplitudeVec2.y;
+
+    this.angleV += this.angleA;
   }
 
   render() {
-    if (this.isComposite) {
-      const sumY = this.p5.map(this.pos.y + this.pos2.y, this.trough + this.trough2, this.crest + this.crest2, this.p5.height * 0.2, this.p5.height * 0.8);
-      if (this.particleStyle === 'circle') {
-        this.p5.circle(this.pos.x, sumY, this.d);
-      } else {
-        this.p5.rect(this.pos.x - this.d / 2, sumY - this.d / 2, this.d, this.d);
-      }
+    const rotateVec = this.amplitudeVec.copy().rotate(this.amplitudeRotation);
+    const rotateVec2 = this.amplitudeVec2.copy().rotate(this.amplitudeRotation);
+
+    const outputPos = P5.Vector.add(this.pos, rotateVec);
+    const outputPos2 = P5.Vector.add(this.pos2, rotateVec2);
+
+
+    if (this.particleStyle === 'circle') {
+      this.p5.circle(outputPos.x, outputPos.y, this.d);
+      this.p5.circle(outputPos2.x, outputPos2.y, this.d);
     } else {
-      if (this.particleStyle === 'circle') {
-        this.p5.circle(this.pos.x, this.pos.y, this.d);
-        this.p5.circle(this.pos2.x, this.pos2.y, this.d);
-      } else {
-        this.p5.rect(this.pos.x - this.d / 2, this.pos.y - this.d / 2, this.d, this.d);
-        this.p5.rect(this.pos2.x - this.d / 2, this.pos2.y - this.d / 2, this.d, this.d);
-      }
+      this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
+      this.p5.rect(outputPos2.x - this.d / 2, outputPos2.y - this.d / 2, this.d, this.d);
     }
   }
+
+  renderComposite() {
+    const rotateVec = this.compositeAmplitudeVec.copy().rotate(this.amplitudeRotation);
+    const outputPos = P5.Vector.add(this.compositePos, rotateVec);
+
+    if (this.particleStyle === 'circle') {
+      this.p5.circle(outputPos.x, outputPos.y, this.d);
+    } else {
+      this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
+    }
+  }
+
 }
 
 @Injectable()
@@ -73,6 +87,8 @@ export class ParticleHarmonicService extends ParticleService {
   count = 60;
   particles: HarmonicParticle[] = [];
   angles: number[] = [];
+
+  isComposite: boolean = false;
 
   constructor() {
     super();
@@ -127,17 +143,29 @@ export class ParticleHarmonicService extends ParticleService {
     // clear
     p5.background(0, 0, 0);
 
-    this.particles.forEach(particle => {
-      particle.update();
-      particle.render();
-    });
+    if (this.isComposite) {
+      this.particles.forEach(particle => {
+        particle.update();
+        particle.renderComposite();
+      });
+    } else {
+      this.particles.forEach(particle => {
+        particle.update();
+        particle.render();
+      });
+    }
+
   }
 
   toggleComposite() {
-    this.particles.forEach(p => p.isComposite = !p.isComposite)
+    this.isComposite = !this.isComposite;
   }
 
   setParticleStyle(style: HarmonicParticleStyle) {
     this.particles.forEach(p => p.particleStyle = style || 'circle')
+  }
+
+  setAmplitudeRotation(angle: number) {
+    this.particles.forEach(p => p.amplitudeRotation = angle)
   }
 }

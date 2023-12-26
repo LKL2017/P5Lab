@@ -12,5 +12,11 @@
       Rectangle
     </mat-radio-button>
   </mat-radio-group>
-
+</div>
+<div class="handler-control-row">
+  <label>Amplitude Rotation</label>
+  <mat-slider [min]="-approachPI" [max]="approachPI" [step]="approachPI / 4" discrete [displayWith]="formatRotation">
+    <input matSliderThumb [(ngModel)]="amplitudeRotation" (ngModelChange)="setAmplitudeRotation($event)">
+  </mat-slider>
+  <div><span>Current Rotation: </span>{{ formatRotation(amplitudeRotation) }}</div>
 </div>

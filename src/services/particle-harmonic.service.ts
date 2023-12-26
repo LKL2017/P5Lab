@@ -15,6 +15,7 @@ class HarmonicParticle implements _P5Particle {
   angleA = 0.02;
   particleStyle: HarmonicParticleStyle = 'circle';
   amplitudeRotation: number = 0;
+  amplitudeSize: number = 0.15;
 
   //multi waves
   pos2: P5.Vector;
@@ -27,7 +28,7 @@ class HarmonicParticle implements _P5Particle {
     return this.p5.height * 0.7;
   }
   get amplitude():number {
-    return this.p5.height * 0.15;
+    return this.p5.height * this.amplitudeSize;
   }
 
   amplitudeVec = new P5.Vector(0, 0);
@@ -167,5 +168,9 @@ export class ParticleHarmonicService extends ParticleService {
 
   setAmplitudeRotation(angle: number) {
     this.particles.forEach(p => p.amplitudeRotation = angle)
+  }
+
+  setAmplitudeSize(size: number) {
+    this.particles.forEach(p => p.amplitudeSize = size)
   }
 }

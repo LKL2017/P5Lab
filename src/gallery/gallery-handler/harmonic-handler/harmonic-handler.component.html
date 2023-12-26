@@ -20,3 +20,10 @@
   </mat-slider>
   <div><span>Current Rotation: </span>{{ formatRotation(amplitudeRotation) }}</div>
 </div>
+<div class="handler-control-row">
+  <label>Single Amplitude Size</label>
+  <mat-slider [min]="0.05" [max]="0.3" [step]="0.01" discrete [displayWith]="formatAmplitudeSize">
+    <input matSliderThumb [(ngModel)]="amplitudeSize" (ngModelChange)="setAmplitudeSize($event)">
+  </mat-slider>
+  <div><span>Relative to the canvas(%): </span>{{ formatAmplitudeSize(amplitudeSize) }}</div>
+</div>

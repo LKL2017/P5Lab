@@ -13,7 +13,7 @@ export class HarmonicHandlerComponent implements OnInit{
   isComposite = false;
   particleStyle: HarmonicParticleStyle = "circle";
   amplitudeRotation: number = 0;
-
+  amplitudeSize = 0.15;
   // not fr strict calculation
   approachPI = 3.14
 
@@ -38,5 +38,13 @@ export class HarmonicHandlerComponent implements OnInit{
   formatRotation(value: number) {
     // TODO here [this] is pointing to the mat-slider, is it a feature?
     return value / 3.14 + 'PI';
+  }
+
+  setAmplitudeSize(size: number) {
+    this.particleService.setAmplitudeSize(size);
+  }
+
+  formatAmplitudeSize(value: number) {
+    return Math.round(value * 100) + '%';
   }
 }

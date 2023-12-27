@@ -64,8 +64,8 @@ class HarmonicParticle implements _P5Particle {
 
     switch (this.particleStyle) {
       case "rect":
-        this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
-        this.p5.rect(outputPos2.x - this.d / 2, outputPos2.y - this.d / 2, this.d, this.d);
+        this.p5.rect(outputPos.x, outputPos.y, this.d, this.d);
+        this.p5.rect(outputPos2.x, outputPos2.y, this.d, this.d);
         break;
       case "pulse":
         this.p5.line(this.pos.x, this.pos.y, outputPos.x, outputPos.y);
@@ -84,7 +84,7 @@ class HarmonicParticle implements _P5Particle {
 
     switch (this.particleStyle) {
       case "rect":
-        this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
+        this.p5.rect(outputPos.x, outputPos.y, this.d, this.d);
         break;
       case "toMouse":
         this.p5.line(outputPos.x, outputPos.y, this.p5.mouseX, this.p5.mouseY);
@@ -121,6 +121,7 @@ export class ParticleHarmonicService extends ParticleService {
       p5.setup = () => {
         p5.createCanvas(w, h, canvasEl);
         p5.background(0, 0, 0);
+        p5.rectMode(p5.CENTER);
         this.genAngles();
         this.genParticles(p5);
         this.setupParticles(p5);

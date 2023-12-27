@@ -11,8 +11,10 @@
     }
 
     .canvas-handler {
-      flex: 1 0 120px;
+      flex: 1 0 240px;
       margin: 0 1rem;
+      max-height: 600px;
+      overflow-y: visible;
 
       .title {
         font-size: 1.2rem;

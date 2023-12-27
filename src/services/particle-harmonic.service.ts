@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import P5 from "p5";
 import {_P5Particle, ParticleService} from "./particle.service";
 
-export type HarmonicParticleStyle = 'circle' | 'rect';
+export type HarmonicParticleStyle = 'circle' | 'rect' | 'line';
 
 class HarmonicParticle implements _P5Particle {
   p5: P5;
@@ -62,12 +62,19 @@ class HarmonicParticle implements _P5Particle {
     const outputPos2 = P5.Vector.add(this.pos2, rotateVec2);
 
 
-    if (this.particleStyle === 'circle') {
-      this.p5.circle(outputPos.x, outputPos.y, this.d);
-      this.p5.circle(outputPos2.x, outputPos2.y, this.d);
-    } else {
-      this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
-      this.p5.rect(outputPos2.x - this.d / 2, outputPos2.y - this.d / 2, this.d, this.d);
+    switch (this.particleStyle) {
+      case "rect":
+        this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
+        this.p5.rect(outputPos2.x - this.d / 2, outputPos2.y - this.d / 2, this.d, this.d);
+        break;
+      case "line":
+        this.p5.line(this.pos.x, this.pos.y, outputPos.x, outputPos.y);
+        this.p5.line(this.pos2.x, this.pos2.y, outputPos2.x, outputPos2.y);
+        break;
+      case "circle":
+      default:
+        this.p5.circle(outputPos.x, outputPos.y, this.d);
+        this.p5.circle(outputPos2.x, outputPos2.y, this.d);
     }
   }
 
@@ -75,10 +82,16 @@ class HarmonicParticle implements _P5Particle {
     const rotateVec = this.compositeAmplitudeVec.copy().rotate(this.amplitudeRotation);
     const outputPos = P5.Vector.add(this.compositePos, rotateVec);
 
-    if (this.particleStyle === 'circle') {
-      this.p5.circle(outputPos.x, outputPos.y, this.d);
-    } else {
-      this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
+    switch (this.particleStyle) {
+      case "rect":
+        this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
+        break;
+      case "line":
+        this.p5.line(this.compositePos.x, this.compositePos.y, outputPos.x, outputPos.y);
+        break;
+      case "circle":
+      default:
+        this.p5.circle(outputPos.x, outputPos.y, this.d);
     }
   }
 
@@ -138,6 +151,7 @@ export class ParticleHarmonicService extends ParticleService {
 
 
   setupParticles(p5: P5) {
+    p5.stroke('cyan');
     p5.fill('lightgreen');
   }
 

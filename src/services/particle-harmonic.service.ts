@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import P5 from "p5";
+import {genRandomLinearGradient} from "../util/graphic";
 import {_P5Particle, ParticleService} from "./particle.service";
 
 export type HarmonicParticleStyle = 'circle' | 'rect' | 'toMouse' | 'pulse';
@@ -9,6 +10,7 @@ class HarmonicParticle implements _P5Particle {
   pos: P5.Vector;
   vel = new P5.Vector(0, 0);
   acc = new P5.Vector(0, 0);
+  color: string = '#56d997';
   d: number;
   angle: number;
   angleV = 0;
@@ -46,6 +48,9 @@ class HarmonicParticle implements _P5Particle {
   }
 
   update() {
+    this.p5.stroke(this.color);
+    this.p5.fill(this.color);
+
     const phase = this.angle + this.angleV;
     this.amplitudeVec.y = Math.sin(phase) * this.amplitude;
     this.amplitudeVec2.y = Math.cos(phase * this.frequency) * this.amplitude;
@@ -102,6 +107,7 @@ class HarmonicParticle implements _P5Particle {
 
 @Injectable()
 export class ParticleHarmonicService extends ParticleService {
+  p5: P5;
   count = 60;
   particles: HarmonicParticle[] = [];
   angles: number[] = [];
@@ -119,12 +125,12 @@ export class ParticleHarmonicService extends ParticleService {
 
     const sketch = (p5: P5) => {
       p5.setup = () => {
+        this.p5 = p5;
         p5.createCanvas(w, h, canvasEl);
         p5.background(0, 0, 0);
         p5.rectMode(p5.CENTER);
         this.genAngles();
         this.genParticles(p5);
-        this.setupParticles(p5);
       }
       p5.draw = () => this.draw(p5);
     }
@@ -151,12 +157,6 @@ export class ParticleHarmonicService extends ParticleService {
     for(let i = 0; i < this.count; i++) {
       this.angles.push(Math.PI / 180 * gap * i);
     }
-  }
-
-
-  setupParticles(p5: P5) {
-    p5.stroke('cyan');
-    p5.fill('lightgreen');
   }
 
   draw(p5: P5) {
@@ -195,5 +195,15 @@ export class ParticleHarmonicService extends ParticleService {
 
   setFrequencyForSecondWave(f: number) {
     this.particles.forEach(p => p.frequency = f)
+  }
+
+  setColor(color: string) {
+    this.particles.forEach(p => p.color = color)
+  }
+
+  setRandomGradient() {
+    const g = genRandomLinearGradient(this.p5.drawingContext, 0, 0, this.width, this.height)
+    this.p5.drawingContext.fillStyle = g
+    this.p5.drawingContext.strokeStyle = g;
   }
 }

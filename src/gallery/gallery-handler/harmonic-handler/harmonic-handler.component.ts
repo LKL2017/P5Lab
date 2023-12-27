@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {HarmonicParticleStyle, ParticleHarmonicService} from "../../../services/particle-harmonic.service";
 
 @Component({
@@ -15,6 +15,8 @@ export class HarmonicHandlerComponent implements OnInit{
   amplitudeRotation: number = 0;
   amplitudeSize = 0.15;
   frequency = 1// maybe px in this program
+  currentColor = '#56d997';
+  colorMode: 'pure' | 'gradient' = 'pure';
 
   // not strict calculation
   approachPI = 3.14
@@ -61,5 +63,18 @@ export class HarmonicHandlerComponent implements OnInit{
 
   formatFrequency(value: number) {
     return value.toString();
+  }
+
+  setColor() {
+    this.particleService.setColor(this.currentColor);
+  }
+
+  setRandomGradient() {
+    this.particleService.setRandomGradient();
+  }
+
+  onColorModeChange() {
+    if (this.colorMode === 'pure') this.setColor();
+    if (this.colorMode === 'gradient') this.setRandomGradient();
   }
 }

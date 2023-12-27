@@ -20,6 +20,26 @@
   </mat-radio-group>
 </div>
 <div class="handler-control-row">
+  <label>Color</label>
+  <mat-radio-group [(ngModel)]="colorMode" (ngModelChange)="onColorModeChange()">
+    <div>
+      <mat-radio-button value="pure">
+        Pure
+      </mat-radio-button>
+      <ng-container *ngIf="colorMode === 'pure'">
+        <input type="color" style="margin: 0 0.5rem" [(ngModel)]="currentColor" (ngModelChange)="setColor()">
+        <span>{{ currentColor }}</span>
+      </ng-container>
+    </div>
+    <div>
+      <mat-radio-button value="gradient">
+        Random Gradient
+      </mat-radio-button>
+      <button *ngIf="colorMode === 'gradient'" mat-raised-button color="accent" style="margin: 0 0.5rem" (click)="setRandomGradient()">Go!</button>
+    </div>
+  </mat-radio-group>
+</div>
+<div class="handler-control-row">
   <label>Amplitude Rotation</label>
   <mat-slider [min]="-approachPI" [max]="approachPI" [step]="approachPI / 4" discrete [displayWith]="formatRotation">
     <input matSliderThumb [(ngModel)]="amplitudeRotation" (ngModelChange)="setAmplitudeRotation($event)">

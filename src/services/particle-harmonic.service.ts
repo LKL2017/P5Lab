@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import P5 from "p5";
 import {_P5Particle, ParticleService} from "./particle.service";
 
-export type HarmonicParticleStyle = 'circle' | 'rect' | 'line';
+export type HarmonicParticleStyle = 'circle' | 'rect' | 'toMouse' | 'pulse';
 
 class HarmonicParticle implements _P5Particle {
   p5: P5;
@@ -67,7 +67,7 @@ class HarmonicParticle implements _P5Particle {
         this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
         this.p5.rect(outputPos2.x - this.d / 2, outputPos2.y - this.d / 2, this.d, this.d);
         break;
-      case "line":
+      case "pulse":
         this.p5.line(this.pos.x, this.pos.y, outputPos.x, outputPos.y);
         this.p5.line(this.pos2.x, this.pos2.y, outputPos2.x, outputPos2.y);
         break;
@@ -86,7 +86,10 @@ class HarmonicParticle implements _P5Particle {
       case "rect":
         this.p5.rect(outputPos.x - this.d / 2, outputPos.y - this.d / 2, this.d, this.d);
         break;
-      case "line":
+      case "toMouse":
+        this.p5.line(outputPos.x, outputPos.y, this.p5.mouseX, this.p5.mouseY);
+        break;
+      case "pulse":
         this.p5.line(this.compositePos.x, this.compositePos.y, outputPos.x, outputPos.y);
         break;
       case "circle":

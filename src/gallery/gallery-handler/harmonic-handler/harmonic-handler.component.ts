@@ -27,6 +27,11 @@ export class HarmonicHandlerComponent implements OnInit{
 
   toggleComposite() {
     this.particleService.toggleComposite();
+
+    if (!this.isComposite && this.particleStyle === 'toMouse') {
+      this.particleStyle = 'circle';
+      this.setParticleParticle(this.particleStyle);
+    }
   }
 
   setParticleParticle(style: HarmonicParticleStyle) {

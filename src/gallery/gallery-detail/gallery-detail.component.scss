@@ -1,8 +1,10 @@
 .container {
-  padding: 0 20%;
+  display: flow-root;
 
   .main {
     display: flex;
+    width: max-content;
+    margin: 0 auto;
 
     canvas {
       background: black;
@@ -10,8 +12,13 @@
       aspect-ratio: 3 / 2;
     }
 
+    .canvas-host button {
+      display: block;
+      margin: 1rem 0;
+    }
+
     .canvas-handler {
-      flex: 1 0 240px;
+      flex: 0 0 240px;
       margin: 0 1rem;
       max-height: 600px;
       overflow-y: visible;

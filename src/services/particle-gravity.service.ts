@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import {radiusToMass} from "../util/math";
 import {_P5Particle, ParticleService} from "./particle.service";
 import P5 from "p5";
+
+export type GravityParticleStyle = 'circle' | 'stroke' | 'triangle';
 
 class GravityParticle implements _P5Particle {
   p5: P5;
@@ -11,8 +14,16 @@ class GravityParticle implements _P5Particle {
   minForce = 0.1;
   maxForce = 0.8
 
+  particleStyle: GravityParticleStyle = 'circle';
+
+  isRotate = false;
+  rotation = 0;
+  rotateAcc = Math.PI / 60;
+
+  color = '#42e8cf'
+
   get mass(): number {
-    return this.r * this.r / 8;
+    return radiusToMass(this.r);
   }
 
   constructor(p5Context: P5, x: number, y: number, r: number) {
@@ -37,13 +48,46 @@ class GravityParticle implements _P5Particle {
   }
 
   update() {
-    this.p5.fill(50, 11 , 233, this.p5.map(this.acc.mag(), this.minForce, this.maxForce, 50, 255));
+    const alpha = this.p5.map(this.acc.mag(), this.minForce, this.maxForce, 50, 255)
+    this.p5.stroke(this.color);
+    this.p5.fill(this.color);
     this.vel.add(this.acc);
     this.pos.add(this.vel);
   }
 
   render() {
-    this.p5.circle(this.pos.x, this.pos.y, this.r * 2);
+    switch (this.particleStyle) {
+      case "triangle":
+        this.renderAsTriangle();
+        break;
+      case "stroke":
+        this.renderAsStroke();
+        break;
+      case "circle":
+      default:
+        this.p5.circle(this.pos.x, this.pos.y, this.r * 2);
+    }
+  }
+
+  renderAsTriangle() {
+    const vecA = this.p5.createVector(0, -this.r * 2);
+
+    if (this.isRotate) {
+      vecA.rotate(this.rotation);
+      this.rotation += this.rotateAcc;
+    }
+
+    const vecB = vecA.copy().rotate(Math.PI * 2 / 3);
+    const vecC = vecA.copy().rotate(Math.PI * 4 / 3);
+    const posA = P5.Vector.add(this.pos, vecA);
+    const posB = P5.Vector.add(this.pos, vecB);
+    const posC = P5.Vector.add(this.pos, vecC);
+
+    this.p5.triangle(posA.x, posA.y, posB.x, posB.y, posC.x, posC.y);
+  }
+
+  renderAsStroke() {
+    this.p5.rect(this.pos.x, this.pos.y, 1, 1);
   }
 
 }
@@ -58,10 +102,8 @@ class AttractorParticle implements _P5Particle {
   G = 60;
   r: number;
 
-  isFollowingMouse = false;
-
   get mass(): number {
-    return this.r * this.r / 8;
+    return radiusToMass(this.r);
   }
 
   constructor(p5Context: P5, x: number, y: number, r: number) {
@@ -71,17 +113,12 @@ class AttractorParticle implements _P5Particle {
     this.r = r;
   }
 
-  setMousePosition(x: number, y: number) {
-    this.isFollowingMouse = true;
-    this.pos.set(x, y);
-  }
-
   update() {
-    if (this.isFollowingMouse) return;
+    this.p5.fill('white');
+    this.p5.stroke('white');
   }
 
   render() {
-    this.p5.fill('white');
     this.p5.circle(this.pos.x, this.pos.y, this.r * 2);
   }
 
@@ -90,14 +127,19 @@ class AttractorParticle implements _P5Particle {
 
 @Injectable()
 export class ParticleGravityService extends ParticleService {
-  count = 10;
-  attractorR = 12;
-  particleR = 6;
+  p5: P5;
+  count = 1;
+  attractorR = 16;
+  particleR = 10;
   attractor: AttractorParticle;
   particles: GravityParticle[] = [];
 
   isShowTail = false;
+  isShowAttractor = true;
 
+  gravityParticleStyle: GravityParticleStyle = 'circle';
+  gravityParticleColor = '#42e8cf';
+  gravityParticleRotate = false;
 
   constructor() {
     super();
@@ -108,14 +150,12 @@ export class ParticleGravityService extends ParticleService {
     this.height = h;
 
     const sketch = (p5: P5) => {
+      this.p5 = p5;
       p5.setup = () => {
         const renderer = p5.createCanvas(w, h, canvasEl);
         p5.background(0, 0, 0);
         this.genAttractor(p5);
         this.genParticles(p5);
-        // renderer.mouseMoved(_ => {
-        //   this.attractor.setMousePosition(p5.mouseX, p5.mouseY);
-        // });
       }
       p5.draw = () => this.draw(p5);
     }
@@ -142,7 +182,7 @@ export class ParticleGravityService extends ParticleService {
     if (this.isShowTail) {
       p5.background(0, 5);
     } else {
-      p5.background(0);
+      this.clear();
     }
 
     this.particles.forEach(particle => {
@@ -152,12 +192,55 @@ export class ParticleGravityService extends ParticleService {
       particle.render();
     })
 
-    this.attractor.update();
-    this.attractor.render();
+    if (this.isShowAttractor) {
+      this.attractor.update();
+      this.attractor.render();
+    }
+  }
+
+  clear() {
+    this.p5.background(0);
   }
 
   toggleTail() {
     this.isShowTail = !this.isShowTail;
   }
 
+  setGravity(g: number) {
+    this.attractor.G = g;
+  }
+
+  setParticleStyle(type: GravityParticleStyle) {
+    this.gravityParticleStyle = type;
+    this.particles.forEach(particle => {
+      particle.particleStyle = type;
+    })
+  }
+
+  toggleRotation(flag: boolean) {
+    this.gravityParticleRotate = flag;
+    this.particles.forEach(particle => particle.isRotate = flag);
+  }
+
+  toggleAttractor() {
+    this.isShowAttractor = !this.isShowAttractor;
+  }
+
+  setParticleCount(count: number) {
+    this.clear();
+    this.count = count;
+    this.particles = [];
+
+    this.genParticles(this.p5);
+
+    // TODO bad assigment
+    this.setParticleStyle(this.gravityParticleStyle);
+    this.setColor(this.gravityParticleColor);
+    this.toggleRotation(this.gravityParticleRotate);
+  }
+
+  setColor(color: string) {
+    this.gravityParticleColor = color;
+    this.particles.forEach(particle => particle.color = color);
+  }
 }

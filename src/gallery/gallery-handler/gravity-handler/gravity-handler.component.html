@@ -2,4 +2,39 @@
   <label>Show Tail</label>
   <mat-slide-toggle [(ngModel)]="isShowTail" (ngModelChange)="toggleTail()">{{ isShowTail ? 'Show' : 'Hidden'}}</mat-slide-toggle>
 </div>
+<div class="handler-control-row">
+  <label>Show Attractor</label>
+  <mat-slide-toggle [(ngModel)]="isShowAttractor" (ngModelChange)="toggleAttractor()">{{ isShowAttractor ? 'Show' : 'Hidden'}}</mat-slide-toggle>
+</div>
+<div class="handler-control-row">
+  <label>Particle Style</label>
+  <mat-radio-group [(ngModel)]="particleStyle" (ngModelChange)="setParticleStyle()">
+    <mat-radio-button value="circle">Circle</mat-radio-button>
+    <mat-radio-button value="triangle">Triangle</mat-radio-button>
+    <mat-radio-button value="stroke">Stroke</mat-radio-button>
+  </mat-radio-group>
+</div>
+<div class="handler-control-row">
+  <label>Particle Count</label>
+  <mat-slider [min]="1" [max]="10" [step]="1" discrete [displayWith]="particleCountDisplay">
+    <input matSliderThumb [(ngModel)]="particleCount" (ngModelChange)="setParticleCount()">
+  </mat-slider>
+</div>
+<div class="handler-control-row">
+  <label>Particle Color</label>
+  <input type="color" style="margin: 0 0.5rem" [(ngModel)]="currentColor" (ngModelChange)="setColor()">
+  <span>{{ currentColor }}</span>
+</div>
+<div class="handler-control-row">
+  <label>Particle Rotation</label>
+  <mat-slide-toggle [(ngModel)]="isRotate" (ngModelChange)="toggleRotation()">{{ isRotate ? 'Rotate' : 'Static' }}</mat-slide-toggle>
+</div>
 
+<!-- Easy to out of control and need refine -->
+
+<!--<div class="handler-control-row">-->
+<!--  <label>Change Gravity</label>-->
+<!--  <mat-slider [min]="gravityMin" [max]="gravityMax">-->
+<!--    <input matSliderThumb [(ngModel)]="gravity" (ngModelChange)="setGravity()">-->
+<!--  </mat-slider>-->
+<!--</div>-->

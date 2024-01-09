@@ -64,7 +64,7 @@ class ImageParticle implements _P5Particle {
 }
 
 @Injectable()
-export class ParticleImageService extends ParticleService {
+export class ParticleImageService extends ParticleService<CanvasRenderingContext2D> {
   p5: P5;
   models: ImageParticleModel[][] = [];
   particles: ImageParticle[] = [];

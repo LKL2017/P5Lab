@@ -106,7 +106,7 @@ class HarmonicParticle implements _P5Particle {
 }
 
 @Injectable()
-export class ParticleHarmonicService extends ParticleService {
+export class ParticleHarmonicService extends ParticleService<CanvasRenderingContext2D> {
   p5: P5;
   count = 60;
   particles: HarmonicParticle[] = [];

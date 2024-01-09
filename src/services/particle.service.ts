@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import P5 from 'p5';
 
+type ParticleContext = CanvasRenderingContext2D | WebGL2RenderingContext;
+
 export abstract class _P5Particle {
   pos: P5.Vector;
   vel: P5.Vector;
@@ -14,8 +16,8 @@ export abstract class _P5Particle {
 @Injectable({
   providedIn: 'root',
 })
-export class ParticleService {
-  context: CanvasRenderingContext2D;
+export class ParticleService<T extends ParticleContext> {
+  context: T;
   width: number;
   height: number;
   P5instance: P5;

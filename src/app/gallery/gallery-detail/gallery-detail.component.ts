@@ -17,7 +17,7 @@ import {ImageHandlerComponent} from "../gallery-handler/image-handler/image-hand
 export class GalleryDetailComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvas') canvasRef!: ElementRef;
 
-  constructor(protected particleService: ParticleService,
+  constructor(protected particleService: ParticleService<any>,
               private router: Router,
               private route: ActivatedRoute
               ) {

@@ -1,7 +1,17 @@
 import {InjectionToken} from "@angular/core";
 
+const _artifactType = [
+  'harmonic',
+  'gravity',
+  'pixel',
+  'raining',
+  'possibility',
+  'solar'
+] as const;
+export type ArtifactType = typeof _artifactType[number];
+
 export interface Artifact {
-  type: 'harmonic' | 'gravity' | 'pixel' | 'raining' | 'possibility';
+  type: ArtifactType;
   title?: string;
   description?: string;
   preview?: string;
@@ -14,5 +24,6 @@ export const MOCK_ARTIFACTS: Artifact[] = [
   {type: 'gravity', title: 'Gravity', preview: 'assets/images/gravity-preview.png'},
   {type: 'pixel', title: 'Pixels', preview: 'assets/images/image-preview.png'},
   {type: 'raining', title: 'Raining', preview: 'assets/images/raining-preview.png'},
+  {type: 'solar', title: 'Solar Simulation', preview: 'assets/images/raining-preview.png'},
   {type: 'possibility', title: 'Keep Exploring...' },
 ]

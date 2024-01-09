@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import P5 from "p5";
-import {genRandomLinearGradient} from "../util/graphic";
+import {genRandomLinearGradient} from "@util/graphic";
 import {_P5Particle, ParticleService} from "./particle.service";
 
 export type HarmonicParticleStyle = 'circle' | 'rect' | 'toMouse' | 'pulse';

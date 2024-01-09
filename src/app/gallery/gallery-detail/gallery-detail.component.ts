@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {ParticleFactory} from "../../di/particle-factory";
-import {ParticleService} from "../../services/particle.service";
+import {ParticleFactory} from "@di/particle-factory";
+import {ParticleService} from "@services/particle.service";
 import {GravityHandlerComponent} from "../gallery-handler/gravity-handler/gravity-handler.component";
 import {HarmonicHandlerComponent} from "../gallery-handler/harmonic-handler/harmonic-handler.component";
 import {ImageHandlerComponent} from "../gallery-handler/image-handler/image-handler.component";

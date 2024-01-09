@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {HarmonicParticleStyle, ParticleHarmonicService} from "../../../services/particle-harmonic.service";
+import {HarmonicParticleStyle, ParticleHarmonicService} from "@services/particle-harmonic.service";
 
 @Component({
   selector: 'app-harmonic-handler',

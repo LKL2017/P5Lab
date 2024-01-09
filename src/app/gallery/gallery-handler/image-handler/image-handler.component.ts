@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ImageParticlePattern, ImageParticleStyle, ParticleImageService} from "../../../services/particle-image.service";
+import {ImageParticlePattern, ImageParticleStyle, ParticleImageService} from "@services/particle-image.service";
 
 @Component({
   selector: 'app-image-handler',

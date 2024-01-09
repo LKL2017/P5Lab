@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {radiusToMass} from "../util/math";
+import {radiusToMass} from "@util/math";
 import {_P5Particle, ParticleService} from "./particle.service";
 import P5 from "p5";
 

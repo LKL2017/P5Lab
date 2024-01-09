@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import P5 from "p5";
-import {calcRelativeBrightness} from "../util/graphic";
+import {calcRelativeBrightness} from "@util/graphic";
 import {_P5Particle, ParticleService} from "./particle.service";
 
 interface RainingParticleModel {

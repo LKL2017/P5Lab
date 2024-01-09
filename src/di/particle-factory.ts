@@ -1,9 +1,9 @@
 import {ActivatedRoute} from "@angular/router";
-import {ParticleGravityService} from "../services/particle-gravity.service";
-import {ParticleHarmonicService} from "../services/particle-harmonic.service";
-import {ParticleImageService} from "../services/particle-image.service";
-import {ParticleRainingService} from "../services/particle-raining.service";
-import {ParticleService} from "../services/particle.service";
+import {ParticleGravityService} from "@services/particle-gravity.service";
+import {ParticleHarmonicService} from "@services/particle-harmonic.service";
+import {ParticleImageService} from "@services/particle-image.service";
+import {ParticleRainingService} from "@services/particle-raining.service";
+import {ParticleService} from "@services/particle.service";
 
 export const ParticleFactory = (route: ActivatedRoute) => {
   console.log('call particle factory')

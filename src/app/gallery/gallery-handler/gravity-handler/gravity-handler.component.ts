@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {GravityParticleStyle, ParticleGravityService} from "../../../services/particle-gravity.service";
+import {GravityParticleStyle, ParticleGravityService} from "@services/particle-gravity.service";
 
 @Component({
   selector: 'app-gravity-handler',

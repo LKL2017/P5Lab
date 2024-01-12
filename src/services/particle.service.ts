@@ -14,8 +14,8 @@ export abstract class _P5Particle {
 @Injectable({
   providedIn: 'root',
 })
-export class ParticleService {
-  context: CanvasRenderingContext2D;
+export class ParticleService<T extends CanvasRenderingContext2D | WebGLRenderingContext> {
+  context: T;
   width: number;
   height: number;
   P5instance: P5;

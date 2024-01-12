@@ -47,7 +47,7 @@ class RainingParticle implements _P5Particle {
 @Injectable({
   providedIn: 'root'
 })
-export class ParticleRainingService extends ParticleService{
+export class ParticleRainingService extends ParticleService<CanvasRenderingContext2D> {
   count = 800;
   particles: RainingParticle[] = [];
   pixels: number[];

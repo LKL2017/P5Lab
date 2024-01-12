@@ -126,7 +126,7 @@ class AttractorParticle implements _P5Particle {
 
 
 @Injectable()
-export class ParticleGravityService extends ParticleService {
+export class ParticleGravityService extends ParticleService<CanvasRenderingContext2D> {
   p5: P5;
   count = 1;
   attractorR = 16;

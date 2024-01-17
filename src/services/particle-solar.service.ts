@@ -2,53 +2,63 @@ import { Injectable } from '@angular/core';
 import {ParticleService} from "@services/particle.service";
 import P5 from "p5";
 
-const maxMoonCount = 2;
-const maxMoonLevel = 2;
+const maxMoonLevel = 3;
+const texturePaths = [
+  'assets/texture/earthmap1k.jpg',
+  'assets/texture/jupitermap.jpg',
+  'assets/texture/mars_1k_color.jpg',
+  'assets/texture/mercurymap.jpg',
+  'assets/texture/venusmap.jpg',
+]
 
 class Planet {
   p5: P5;
   distance: number;
   radius: number;
-  pos: P5.Vector;
+  pos: P5.Vector; // relative to its parent origin
   instance: P5;
   children: Planet[];
 
   axis = P5.Vector.random3D();
 
-  constructor(p5: P5, d: number, r: number) {
+  texture: P5.Image;
+
+  constructor(p5: P5, d: number, r: number, texture: P5.Image) {
     this.p5 = p5;
     this.distance = d;
     this.radius = r;
     this.pos = P5.Vector.random3D().mult(d);
+    this.texture = texture;
   }
 
-  spawnMoons(count: number, level: number) {
+  spawnMoons(count: number, level: number, fn: () => P5.Image) {
     this.children = [];
     for (let i = 0; i < count; i++) {
-      const r = this.radius / 2;
-      const d = this.distance + this.radius + r;
-      const planet = new Planet(this.p5, d, r);
-      planet.axis = P5.Vector.sub(planet.pos, this.pos).cross(P5.Vector.random3D());
+      const r = this.radius / ((level + 1) * 0.8);
+      const d = this.p5.random(this.radius + r, (this.radius + r) * 2.5);
+      const planet = new Planet(this.p5, d, r, fn());
+      planet.axis = planet.pos.cross(P5.Vector.random3D());
       this.children.push(planet);
-      if (level < 2) {
-        planet.spawnMoons(count, level + 1);
+      if (level < maxMoonLevel) {
+        planet.spawnMoons(count, level + 1, fn);
       }
     }
   }
 
   orbit(angle: number) {
-    this.p5.fill(200,0, 200);
     this.p5.push();
+    this.p5.fill(200,0, 200);
     this.p5.translate(this.pos);
-    const sphere = this.p5.sphere(this.radius);
-    sphere.rotate(angle, new P5.Vector(1, 0, 0));
-    this.p5.pop();
+    this.p5.rotate(angle, this.axis);
+    this.p5.texture(this.texture);
+    this.p5.sphere(this.radius);
 
     if (this.children) {
       this.children.forEach(planet => {
         planet.orbit(angle);
       })
     }
+    this.p5.pop();
   }
 }
 
@@ -60,7 +70,10 @@ export class ParticleSolarService extends ParticleService<WebGLRenderingContext>
   sun: Planet;
 
   angleV = 1;
-  angleA = 0.2;
+  angleA = 0.01;
+
+  sunTexture: P5.Image;
+  texturesArr: P5.Image[];
 
   constructor() {
     super();
@@ -72,11 +85,20 @@ export class ParticleSolarService extends ParticleService<WebGLRenderingContext>
 
     const sketch = (p5: P5) => {
       this.p5 = p5;
+
+      p5.preload = () => {
+        this.sunTexture = p5.loadImage('assets/texture/sunmap.jpg');
+        this.texturesArr = texturePaths.map(path => p5.loadImage(path));
+      }
+
       p5.setup = () => {
         p5.createCanvas(w, h, p5.WEBGL, canvasEl);
 
-        this.sun = new Planet(p5, 0, 100);
-        this.sun.spawnMoons(1, 1);
+        this.sun = new Planet(p5, 0, 100, this.sunTexture);
+        const genTextureFn = () => {
+          return this.texturesArr[Math.floor(Math.random() * this.texturesArr.length)];
+        }
+        this.sun.spawnMoons(2, 1, genTextureFn);
       }
       p5.draw = () => this.draw(p5);
     }
@@ -89,7 +111,9 @@ export class ParticleSolarService extends ParticleService<WebGLRenderingContext>
   }
 
   draw(p5: P5) {
-    p5.background('lightblue');
+    p5.background('black');
+    p5.noStroke();
+    p5.lights();
     this.sun.orbit(this.angleV);
     this.angleV += this.angleA;
   }

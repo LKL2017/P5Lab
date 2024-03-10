@@ -1,13 +1,13 @@
 .container {
   display: flex;
   flex-flow: column wrap;
-  width: 800px;
+  width: 1000px;
   margin: 0 auto;
 
   .item {
-    flex: 0 1 300px;
+    flex: 0 1 500px;
     align-self: flex-start;
-    width: 240px;
+    width: 420px;
     margin: 1.5rem;
     transition: all ease 0.3s;
 
